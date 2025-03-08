@@ -1,0 +1,46 @@
+
+@if (dealers() != null) {
+	<!-- Filters -->
+	<form [formGroup]="form" class="w-full mb-6">
+		<div class="flex items-center gap-3">
+			<mat-form-field class="w-full sm:w-1/2">
+				<mat-label>Search</mat-label>
+				<input type="text" formControlName="query"
+					placeholder="Search by dealer name or table number" 
+					matInput />
+			</mat-form-field>
+			
+			<mat-checkbox formControlName="grouped">
+				Group by category
+			</mat-checkbox>
+		</div>
+	</form>
+	
+	@if (!form.get("grouped")?.value) {
+		<!-- List -->
+		<div class="container auto-rows-fr grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+			@for (d of dealers(); track d.dealerID) {
+				<app-dealer [dealer]="d"></app-dealer>
+			}
+		</div>
+	}
+	@else {
+		<!-- Grouped list -->
+		@for (g of createGrouped(dealers()!); track g[0]) {
+			<div class="mb-8">
+				<h3 class="text-xl mb-4">
+					Category: <span class="font-bold">{{g[0]}}</span>
+				</h3>
+				
+				<div class="container auto-rows-fr grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+					@for (d of g[1]; track d.dealerID) {
+						<app-dealer [dealer]="d"></app-dealer>
+					}
+				</div>
+			</div>
+		}
+	}
+}
+@else {
+	<mat-spinner class="app-mdc-override m-auto" diameter="40" color="slategray"></mat-spinner>
+}

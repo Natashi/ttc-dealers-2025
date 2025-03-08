@@ -36,7 +36,7 @@ export class DealerViewComponent implements OnInit {
 	
 	constructor() {
 		effect(() => {
-			console.log(this.dealerId());
+			//console.log(this.dealerId());
 			console.log(this.dealer());
 		});
 		

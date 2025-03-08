@@ -43,8 +43,11 @@ export class DealerService {
 				Rx.tap({
 					next: x => {
 						this._dealers.set(x);
-						console.log(x);
+						//console.log(x);
 					},
+					error: e => {
+						console.error(e);
+					}
 				}),
 			);
 	}

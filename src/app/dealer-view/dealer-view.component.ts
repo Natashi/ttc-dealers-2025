@@ -1,10 +1,12 @@
-import { Component, computed, effect, inject, Inject, input, Input, Signal, signal } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, inject, Inject, input, Input, model, OnInit, Signal, signal, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { API_BASE_TOKEN } from '../data.types';
 import { DealerInfo, DealerService } from '../dealers.service';
+
+const TAB_STORAGE = 'dealer-view-lang-tab';
 
 @Component({
 	selector: 'app-dealer-view',
@@ -17,7 +19,7 @@ import { DealerInfo, DealerService } from '../dealers.service';
 		MatTabsModule,
 	],
 })
-export class DealerViewComponent {
+export class DealerViewComponent implements OnInit {
 	dealerId = input<number>(0);
 	
 	readonly domSanitizer = inject(DomSanitizer);
@@ -30,11 +32,23 @@ export class DealerViewComponent {
 		return dealers.find(x => x.dealerID == this.dealerId())!;
 	});
 	
+	tabIndex = model(0);
+	
 	constructor() {
 		effect(() => {
 			console.log(this.dealerId());
 			console.log(this.dealer());
 		});
+		
+		effect(() => {
+			localStorage.setItem(TAB_STORAGE, this.tabIndex().toString());
+		});
+	}
+	
+	ngOnInit(): void {
+		const tabLang = localStorage.getItem(TAB_STORAGE);
+		const tabIndex = Number(tabLang);
+		this.tabIndex.set(isNaN(tabIndex) ? 0 : tabIndex);
 	}
 	
 	// --------------------------------------------------

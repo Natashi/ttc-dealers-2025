@@ -21,9 +21,20 @@
 		</h4>
 		
 		<div class="bg-gray-300 overflow-hidden">
-			<img class="w-full h-full aspect-square object-cover"
-				[alt]="dealer().dealerName"
-				[src]="imgUrl" />
+			<div class="w-full h-full aspect-square">
+				@if (dealer().dealerMenu) {
+					<img class="object-cover"
+						[alt]="dealer().dealerName"
+						[src]="imgUrl" />
+				}
+				@else {
+					<div class="h-full flex items-center justify-center">
+						<p class="text-gray-500 italic">
+							No menu uploaded
+						</p>
+					</div>
+				}
+			</div>
 		</div>
 	</div>
 	<div>
@@ -34,8 +45,17 @@
 		<mat-tab-group [(selectedIndex)]="tabIndex" #tabGroup >
 			@for (t of tabs; track t.label) {
 				<mat-tab [label]="t.label">
-					<div class="mt-6 p-2 text-gray-700 whitespace-pre-wrap leading-6">
-						{{t.text}}
+					<div class="mt-6 p-2 ">
+						@if (t.text) {
+							<p class="text-gray-700 text-wrap leading-6">
+								{{t.text}}
+							</p>
+						}
+						@else {
+							<p class="text-gray-500 italic">
+								No description provided
+							</p>
+						}
 					</div>
 				</mat-tab>
 			}

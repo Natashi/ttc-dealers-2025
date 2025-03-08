@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as Rx from 'rxjs';
 import { DataService } from '../data.service';
@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { DealerComponent } from './dealer/dealer.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Collection } from '../../util';
+import { ScrollPositionService } from '../scroll.service';
 
 @Component({
 	selector: 'app-dealers-list',
@@ -29,10 +30,11 @@ import { Collection } from '../../util';
 		DealerComponent,
 	],
 })
-export class DealersListComponent {
+export class DealersListComponent implements OnInit, OnDestroy {
 	private readonly formBuilder = inject(FormBuilder);
 	
 	private readonly dataService = inject(DataService);
+	private readonly scrollPositionService = inject(ScrollPositionService);
 	private readonly dealerService = inject(DealerService);
 	
 	form!: FormGroup;
@@ -79,6 +81,14 @@ export class DealersListComponent {
 				next: (x: boolean) =>
 					this.filters.update((f) => ({ ...f, grouped: x }))
 			});
+	}
+	
+	ngOnInit(): void {
+		this.scrollPositionService.popScroll();
+	}
+	
+	ngOnDestroy(): void {
+		this.scrollPositionService.pushScroll();
 	}
 	
 	// --------------------------------------------------

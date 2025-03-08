@@ -5,6 +5,7 @@ import { appRoutes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { DataService } from './data.service';
+import { DealerService } from './dealers.service';
 import { API_BASE_TOKEN } from './data.types';
 
 export const appConfig: ApplicationConfig = {
@@ -24,6 +25,8 @@ export const appConfig: ApplicationConfig = {
 		}),
 		
 		DataService,
+		DealerService,
+		
 		{
 			provide: API_BASE_TOKEN,
 			useValue: "https://ttc.events.prod.uwu.co.th"

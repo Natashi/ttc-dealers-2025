@@ -19,6 +19,12 @@ export const appRoutes: Routes = [
 			},
 			
 			{
+				path: 'dealers/:dealerId',
+				loadComponent: () => import('./dealer-view/dealer-view.component')
+					.then(m => m.DealerViewComponent)
+			},
+			
+			{
 				path: '**', redirectTo: '/dealers', pathMatch: 'full'
 			},
 		],
